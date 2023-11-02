@@ -2,7 +2,7 @@ package com.joan.security.controller;
 
 import com.joan.security.config.UserAuthenticationProvider;
 import com.joan.security.dto.SignUpDTO;
-import com.joan.security.dto.UserDTO;
+import com.joan.security.dto.User;
 import com.joan.security.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,19 +23,19 @@ public class AuthenticationController {
     private final UserAuthenticationProvider userAuthenticationProvider;
 
     @PostMapping("/log-in")
-    public ResponseEntity<UserDTO> login(@AuthenticationPrincipal UserDTO userDTO) throws ParseException {
+    public ResponseEntity<User> login(@AuthenticationPrincipal User userDTO) throws ParseException {
         userDTO.setToken(userAuthenticationProvider.createToken(userDTO));
         return ResponseEntity.ok(userDTO);
     }
 
     @PostMapping("/sign-up")
-    public ResponseEntity<UserDTO> register(@RequestBody SignUpDTO signUpDTO) {
-        UserDTO createdUser = userService.signUp(signUpDTO);
+    public ResponseEntity<User> register(@RequestBody SignUpDTO signUpDTO) {
+        User createdUser = userService.signUp(signUpDTO);
         return ResponseEntity.ok(createdUser);
     }
 
     @PostMapping("/log-out")
-    public ResponseEntity<Void> logout(@AuthenticationPrincipal UserDTO signUpDTO) {
+    public ResponseEntity<Void> logout(@AuthenticationPrincipal User signUpDTO) {
         SecurityContextHolder.clearContext();
         return ResponseEntity.noContent().build();
     }

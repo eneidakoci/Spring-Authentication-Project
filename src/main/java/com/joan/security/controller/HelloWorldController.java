@@ -18,6 +18,6 @@ public class HelloWorldController {
     @GetMapping("/john")
     @PreAuthorize("hasRole('ROLE_EDITOR')")
     public ResponseEntity<String> adminHello() { // use of PreAuthorize => only users with role editor can access this resource
-        return ResponseEntity.ok("Hello");
+        return ResponseEntity.ok("Hello editor");
     }
 }

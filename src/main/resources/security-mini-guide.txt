@@ -5,7 +5,10 @@ Spring Security 6
 3. Krijo nje Bean te tipit PasswordEncoder per te krijuar nje instasnce te BCryptPassword encoder qe eshte nder enkriptuesit me te mire
 4. Vendos nje secret key ne application properties me te cilin do enkriptohet tokeni JWT qe do krijohet kur useri te bej login
 5. Krijo nje UserAuthenticationProvider me 2 funksionalitete kryesore: krijimin e tokenit dhe validim/dekodim te tokenit JWT (Libraria ndihmese: com.auth0: jwt-api)
-6. Krijo nje klase JWTFilter qe extends OncePerRequestFilter qe duhet bere override me patjeter metoden doFilterInternal. Brenda kesaj metode therritet metoda qe validon dhe kthen objektin e userit prej klases UserAuthenticationProvider. Normalisht, ne kete filter extractohet tokeni qe perdoruesi ka cuar ne request, dhe bazuar te tokeni, merret useri dhe vendoset ne kontekst, vetem nqs tokeni eshte valid (e ben metoda e therritur prej UserAuthenticationProvider)
+6. Krijo nje klase JWTFilter qe extends OncePerRequestFilter qe duhet bere override me patjeter metoden doFilterInternal.
+   Brenda kesaj metode therritet metoda qe validon dhe kthen objektin e userit prej klases UserAuthenticationProvider.
+   Normalisht, ne kete filter extractohet tokeni qe perdoruesi ka cuar ne request, dhe bazuar te tokeni, merret useri dhe vendoset ne kontekst,
+   vetem nqs tokeni eshte valid (e ben metoda e therritur prej UserAuthenticationProvider).
 7. Krijo klasen SecurityConfig dhe krijo nje Bean te tipit SecurityFilterChain , si bean merr si dependence HttpSecurity
 8. Ketu prej HttpSecurity konfigurohet shtimi i filtrave dhe behet disable csrf dhe cors , gjithashtu vendoset qe sdo kemi sesion por kemi sigurine stateless
 9. Percaktohen requestMatchers , nepermjet te cileve mund te percaktojme pathet/metodat http se cfare niveli sigurie duhet te kene qe dmth a nevojitet te jesh i loguar per te aksesuar nje resurs specifik apo a nevojitet te kesh nje rol te caktuar per te qene ne gjendje te therrasesh nje API te caktuar

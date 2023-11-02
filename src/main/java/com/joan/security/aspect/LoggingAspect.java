@@ -1,6 +1,6 @@
 package com.joan.security.aspect;
 
-import com.joan.security.dto.UserDTO;
+import com.joan.security.dto.User;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,7 +23,7 @@ public class LoggingAspect {
 
     @Around("execution(* com.joan.security.controller..*(..))")
     public Object logUser(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDTO) {
+        if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof User) {
             logger.info("Logged user {}", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         }
         return proceedingJoinPoint.proceed();
