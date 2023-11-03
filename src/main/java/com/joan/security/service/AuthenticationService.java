@@ -21,7 +21,7 @@ public class AuthenticationService {
     }
 
     public User authenticate(CredentialsDTO credentialsDto) {
-        User user = repository.findUserDTOByLogin(credentialsDto.getLogin());
+        User user = repository.findUserByLogin(credentialsDto.getLogin());
         String encodedMasterPassword = passwordEncoder.encode(CharBuffer.wrap(user.getPassword()));
         if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.getPassword()), encodedMasterPassword)) {
             return this.findByLogin(credentialsDto.getLogin());
