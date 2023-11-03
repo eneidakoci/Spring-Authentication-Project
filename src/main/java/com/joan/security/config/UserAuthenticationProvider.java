@@ -40,14 +40,14 @@ public class UserAuthenticationProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(User userDTO) throws ParseException {
+    public String createToken(User user) throws ParseException {
         Date now = new Date();
         Date validity = new Date(now.getTime() + 3600000);
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         return JWT.create()
-                .withIssuer(userDTO.getLogin())
-                .withClaim(ID, userDTO.getId())
-                .withClaim(ROLES, userDTO.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(ROLES_DELIMITER)))
+                .withIssuer(user.getLogin())
+                .withClaim(ID, user.getId())
+                .withClaim(ROLES, user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(ROLES_DELIMITER)))
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
                 .sign(algorithm);
@@ -58,17 +58,17 @@ public class UserAuthenticationProvider {
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(token);
 
-        User userDTO = new User(); //authenticationService.findByLogin(decodedJWT.getIssuer());
+        User user = new User(); //authenticationService.findByLogin(decodedJWT.getIssuer());
         // avoided - to avoid possible DB hit if it were a prod application
-        userDTO.setId(Long.valueOf(decodedJWT.getClaim(ID).toString()));
-        userDTO.setLogin(decodedJWT.getIssuer());
-        userDTO.setAuthorities(decodedJWT.getClaim(ROLES).toString().replaceAll("\"", ""));
-        userDTO.setToken(token);
-        return new UsernamePasswordAuthenticationToken(userDTO, null, userDTO.getAuthorities());
+        user.setId(Long.valueOf(decodedJWT.getClaim(ID).toString()));
+        user.setLogin(decodedJWT.getIssuer());
+        user.setAuthorities(decodedJWT.getClaim(ROLES).toString().replaceAll("\"", ""));
+        user.setToken(token);
+        return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }
 
     public Authentication validateCredentials(CredentialsDTO credentialsDTO) {
-        User userDTO = authenticationService.authenticate(credentialsDTO);
-        return new UsernamePasswordAuthenticationToken(userDTO, null, userDTO.getAuthorities());
+        User user = authenticationService.authenticate(credentialsDTO);
+        return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
     }
 }
