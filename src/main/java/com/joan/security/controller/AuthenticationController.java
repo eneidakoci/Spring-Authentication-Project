@@ -28,30 +28,13 @@ public class AuthenticationController {
     @Autowired
     private UserMapper userMapper;
 
-    //    @PostMapping("/log-in")
-//    public ResponseEntity<User> login(@AuthenticationPrincipal User userDTO) throws ParseException {
-//        userDTO.setToken(userAuthenticationProvider.createToken(userDTO));
-//        return ResponseEntity.ok(userDTO);
-//    }
-    /*working*/
-@PostMapping("/log-in")
-public ResponseEntity<UserDTO> login(@AuthenticationPrincipal User user) throws ParseException {
-    UserDTO userDTO = userMapper.toDTO(user);
-    userDTO.setToken(userAuthenticationProvider.createToken(user));
-    return ResponseEntity.ok(userDTO);
-}
-//    @PostMapping("/log-in")
-//    public ResponseEntity<UserDTO> login(@AuthenticationPrincipal UserDTO userDTO) throws ParseException {
-//        if (userDTO != null) {
-//            User user = userMapper.toEntity(userDTO);
-//            user.setToken(userAuthenticationProvider.createToken(user));
-//            userDTO = userMapper.toDTO(user);
-//            return ResponseEntity.ok(userDTO);
-//        } else {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-//        }
-//    }
-
+    @PostMapping("/log-in")
+    public ResponseEntity<UserDTO> login(@AuthenticationPrincipal User user) throws ParseException {
+        UserDTO userDTO = userMapper.toDTO(user);
+        userDTO.setToken(userAuthenticationProvider.createToken(user));
+        return ResponseEntity.ok(userDTO);
+    }
+    
     @PostMapping("/sign-up")
     public ResponseEntity<UserDTO> register(@RequestBody SignUpDTO signUpDTO) {
         UserDTO createdUser = userMapper.toDTO(userService.signUp(signUpDTO));
